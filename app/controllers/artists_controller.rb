@@ -7,8 +7,12 @@ class ArtistsController < ApplicationController
     @artist = Artist.find(params[:id])
   end
 
-  def new
-    @artist = Artist.new
+  def new # check preferences, new artist false => redirect, set new artist
+    if Preference.first.allow_create_artists
+      @artist = Artist.new
+    else
+      redirect_to artists_path, alert: "Can't create artists at this time"
+    end
   end
 
   def create
